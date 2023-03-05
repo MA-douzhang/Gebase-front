@@ -1,0 +1,15 @@
+.add-button{
+    position: fixed;
+    bottom: 60px;
+    width: 50px;
+    right: 12px;
+    height: 50px;
+    border-radius: 50%;
+}
+.van-icon__image{
+    display: block;
+    width: 2em;
+    height: 2em;
+    object-fit: contain;
+    border-radius: 50%;
+}
