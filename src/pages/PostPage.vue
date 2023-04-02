@@ -1,7 +1,7 @@
 <template>
   <div
       id="postCardList"
-      v-for="post in postList"
+      v-for="(post,index) in postList"
   >
     <van-cell-group inset>
       <van-card
@@ -10,15 +10,18 @@
       >
         <template #desc>
           <div style="margin-top: 2px;color: darkgray">
-            {{post.content}}
+            {{ post.content }}
           </div>
 
         </template>
         <template #footer>
-          <van-divider />
-          <van-button size="small" @click="preAddComment(post.id)" icon="chat-o" >评论</van-button>
-          <van-button size="small" icon="good-job-o">点赞</van-button>
-          <van-button size="small" type="danger" v-if="post.userId === currentUser?.id" @click="doDeletePost(post.id)">删除</van-button>
+          <van-divider/>
+          <van-button size="small" @click="preAddComment(post.id)" icon="chat-o">评论</van-button>
+          <van-button size="small" icon="good-job-o" @click="doThumb(index,post.id)" v-if="post.thumb" color="#ee0a24">{{post.thumbNum}}</van-button>
+          <van-button size="small" icon="good-job-o" @click="doThumb(index,post.id)" v-if="!post.thumb">{{post.thumbNum}}</van-button>
+          <van-button size="small" type="danger" v-if="post.userId === currentUser?.id" @click="doDeletePost(post.id)">
+            删除
+          </van-button>
         </template>
       </van-card>
       <div
@@ -27,7 +30,7 @@
       >
         <van-cell :title="comment.username"
                   :icon="comment.avatarUrl"
-                  :label="comment.content" >
+                  :label="comment.content">
         </van-cell>
 
       </div>
@@ -42,10 +45,9 @@
         :show-page-size="3"
         force-ellipses
         style="margin-bottom: 0"
-
     />
   </van-sticky>
-  <van-action-sheet v-model:show="show" title="评论" @close="doAddCommentCancel" >
+  <van-action-sheet v-model:show="show" title="评论" @close="doAddCommentCancel">
     <van-cell-group inset>
       <van-field
           v-model="comment"
@@ -57,7 +59,8 @@
           show-word-limit
       />
     </van-cell-group>
-    <van-button size="small" type="primary" style="float: right; margin: 5px 12px;" @click="doAddComment">发送</van-button>
+    <van-button size="small" type="primary" style="float: right; margin: 5px 12px;" @click="doAddComment">发送
+    </van-button>
   </van-action-sheet>
   <van-button icon="plus" type="primary" class="add-button" @click="doPostAdd"/>
 
@@ -80,21 +83,22 @@ const addCommentPost = ref(0);
 const router = useRouter();
 const currentPage = ref(1)
 
+
 interface postListProps {
   postList: postType[];
 }
 
-onMounted(async ()=>{
+onMounted(async () => {
   listPost();
-  currentUser.value =await getCurrentUser();
+  currentUser.value = await getCurrentUser();
 })
 
 /**
  * 删除帖子
  */
-const doDeletePost = async (id:number)=>{
-  const res = await myAxios.post("/post/delete",{
-    id:id,
+const doDeletePost = async (id: number) => {
+  const res = await myAxios.post("/post/delete", {
+    id: id,
   })
   if (res?.code === 0 && res) {
     showSuccessToast("删除成功")
@@ -121,21 +125,21 @@ const listPost = async () => {
 /**
  * 添加帖子
  */
-const doPostAdd = () =>{
+const doPostAdd = () => {
   router.push({
     path: "/post/add",
   })
 }
 
-const preAddComment = (postId:number)=>{
+const preAddComment = (postId: number) => {
   show.value = true;
   addCommentPost.value = postId;
 }
 /**
  * 给帖子评论
  */
-const doAddComment =async () =>{
- const res = await myAxios.post("/post/addComment",{
+const doAddComment = async () => {
+  const res = await myAxios.post("/post/addComment", {
     content: comment.value,
     postId: addCommentPost.value,
   })
@@ -148,13 +152,32 @@ const doAddComment =async () =>{
 /**
  * 关闭评论
  */
-const doAddCommentCancel = () =>{
-  comment.value ='';
+const doAddCommentCancel = () => {
+  comment.value = '';
   show.value = false;
 }
 
+/**
+ * 点赞
+ */
+const doThumb = async (index:number,postId: number) => {
+  const res = await myAxios.post("/post_thumb/", {
+    postId: postId,
+  })
+  if (res?.code === 0 && res) {
+    //返回为1表示点赞 返回为-1表示取消点赞
+    if (res.data === 1){
+      postList.value[index].thumbNum +=1;
+    }else {
+      postList.value[index].thumbNum -=1;
+    }
+    postList.value[index].thumb = !postList.value[index].thumb;
+  } else {
+    showFailToast('点赞失败' + (res.description ? `,${res.description}` : ''))
+  }
+}
 
-watchEffect(()=>{
+watchEffect(() => {
   addCommentPost.value
 })
 </script>

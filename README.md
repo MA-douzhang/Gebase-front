@@ -34,6 +34,7 @@ myAxios.ts文件中修改后端地址
    ```
 项目运行
 ```
+npm install
 vite
 ```
 ## 伙伴校园的后端源码

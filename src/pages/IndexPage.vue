@@ -15,7 +15,6 @@
           :show-page-size="3"
           force-ellipses
           style="margin-bottom: 0"
-
       />
     </van-sticky>
   </template>
@@ -59,7 +58,7 @@ const loadDate = async () =>{
     userListData = await myAxios.get('/user/recommend', {
       params: {
         pageNum:currentPage.value,
-        pageSize:6,
+        pageSize:15,
       }
     })
         .then(function (response) {
