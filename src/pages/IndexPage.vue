@@ -26,7 +26,7 @@ import UserCardList from "../components/UserCardList.vue";
 import myAxios from "../plugins/myAxios";
 import {ref, watchEffect} from "vue";
 import {userType} from "../models/user";
-import {showSuccessToast} from "vant";
+import {showFailToast, showSuccessToast} from "vant";
 
 const userList = ref([]);
 const isMatchMode = ref<boolean>(false);
@@ -63,7 +63,11 @@ const loadDate = async () =>{
     })
         .then(function (response) {
           console.log(response);
-          return response?.data?.records;
+          if (response?.data === null){
+            showFailToast( '' + (response.description ? `${response.description}` : ''))
+            return null;
+          }
+          return response?.data;
         })
         .catch(function (error) {
           // 处理错误情况

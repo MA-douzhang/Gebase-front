@@ -35,11 +35,14 @@ const props = withDefaults(defineProps<UserCardListProps>(), {
 });
 //用户信息标签字符串化
 const loadDate =() =>{
-  props.userList.forEach((user:userType) =>{
-    if (user.tags){
-      user.tags = JSON.parse(user.tags);
-    }
-  })
+  console.log("userList"+props.userList)
+  if (props.userList){
+    props.userList.forEach((user:userType) =>{
+      if (user.tags){
+        user.tags = JSON.parse(user.tags);
+      }
+    })
+  }
 }
 watchEffect(()=>{
   loadDate();
