@@ -20,6 +20,7 @@
     <van-tabbar-item to="/team" icon="search" name="team">队伍</van-tabbar-item>
     <van-tabbar-item to="/post" icon="fire-o" name="post">贴吧</van-tabbar-item>
     <van-tabbar-item to="/user/chat" icon="chat-o" name="chat">聊天</van-tabbar-item>
+    <van-tabbar-item to="/notice" icon="comment-o" name="notice">信息</van-tabbar-item>
     <van-tabbar-item to="/user" icon="friends-o" name="user">个人</van-tabbar-item>
   </van-tabbar>
 </template>
