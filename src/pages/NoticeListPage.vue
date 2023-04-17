@@ -1,17 +1,21 @@
 <template>
-  <template v-if="noticeList.length<=0">
-    <van-empty description="无信息" />
-  </template>
-  <van-cell-group
-      v-for="notice in noticeList"
-  >
-    <van-cell :title="notice.senderName+notice.content"  :label="notice.targetContent" @click="doChatUser(user.userAccount,messages)" is-link>
-      <template #right-icon>
-        <van-icon name="warning" color="red" size="20px" badge=""/>
+  <van-pull-refresh v-model="loading" @refresh="onRefresh" style="min-height: 100vh;">
+      <template v-if="noticeList.length<=0">
+        <van-empty description="无信息" />
       </template>
-    </van-cell>
-  </van-cell-group>
+
+      <van-cell-group
+          v-for="notice in noticeList"
+      >
+        <van-cell :title="notice.senderName+notice.content"  :label="notice.targetContent" @click="doPostInfo(notice.targetId,notice.id)" is-link>
+          <template #right-icon v-if="notice.noticeState===0">
+            <van-icon name="warning" color="red" size="20px" badge=""/>
+          </template>
+        </van-cell>
+      </van-cell-group>
+  </van-pull-refresh>
 </template>
+
 
 <script setup lang="ts">
 
@@ -23,8 +27,7 @@ import {myWebSocket} from "../config/myWebSocket";
 import myAxios from "../plugins/myAxios";
 
 const user = ref('');
-const messages = ref([])
-const chatUser = ref('');
+const loading = ref(false)
 const content = ref('');
 const notices = ref([])
 const noticeList = ref([])
@@ -38,8 +41,12 @@ onMounted(async () => {
   init();
 })
 
+const onRefresh = async () =>{
+  loading.value = false
+  init();
+}
+
 const init =async () => {
-  //获取用户账号作为聊天地址的参数
   const res = await myAxios.get('/notice/list')
   if (res?.code === 0 && res) {
       notices.value = res.data
@@ -73,18 +80,29 @@ const getNoticeList =( noticeList: []) =>{
   }
   return noticeList;
 }
+const readPost =async (noticeId:number) =>{
+  const res = await myAxios.post('/notice/update',{
+    id: noticeId,
+     noticeState: 1
+  })
+  if (res){
+    showSuccessToast("成功")
+  }else {
+    showFailToast("失败")
+  }
+}
 
 /**
- * 选择聊天的用户
+ * 选择帖子详情
  */
-const doChatUser = (userAccount: string,messages:any) => {
-  chatUser.value = userAccount;
+const doPostInfo = (id: number,noticeId:number) => {
   router.push({
-    path: '/user/chat/info',
+    path: '/post/info',
     query: {
-      userAccount,
+      id,
     }
   })
+  readPost(noticeId)
 }
 </script>
 

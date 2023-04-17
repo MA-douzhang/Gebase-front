@@ -4,10 +4,10 @@
     <van-tab title="公开" name='public'/>
     <van-tab title="加密" name='secret'/>
   </van-tabs>
-  <van-button icon="plus" type="primary" class="add-button" @click="doTeamAdd"/>
   <van-pull-refresh v-model="loading" @refresh="onRefresh" style="min-height: 100vh;">
     <TeamCardList :team-list="teamList"/>
   </van-pull-refresh>
+  <van-button icon="plus" type="primary" class="add-button" @click="doTeamAdd" style="z-index: 0"/>
 </template>
 
 <script setup>

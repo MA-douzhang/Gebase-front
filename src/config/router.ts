@@ -18,6 +18,8 @@ import PostAddPage from "../pages/PostAddPage.vue";
 import UserChatListPage from "../pages/UserChatListPage.vue";
 import UserChatPage from "../pages/UserChatPage.vue";
 import NoticeListPage from "../pages/NoticeListPage.vue";
+import PostInfoPage from "../pages/PostInfoPage.vue";
+
 
 const routes = [
     {path: '/', component: IndexPage},
@@ -39,6 +41,7 @@ const routes = [
     {path: '/user/team/join', title:"我加入的队伍",component: UserJoinPage},
     {path: '/post', title:"伙伴圈",component: PostPage},
     {path: '/post/add', title:"发布帖子",component: PostAddPage},
+    {path: '/post/info', title:"帖子详情",component: PostInfoPage},
     {path: '/notice', title:"通知信息",component: NoticeListPage},
 ]
 export default routes;
