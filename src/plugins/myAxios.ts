@@ -4,7 +4,7 @@ import router from "../config/router";
 
 const isDev = process.env.NODE_ENV === 'development'
 const myAxios = axios.create({
-    baseURL: isDev ? 'http://localhost:9091/api':'http://线上地址/api'
+    baseURL: isDev ? 'http://localhost:9091/api':'http://服务器地址/api'
 });
 //请求头携带cookie
 myAxios.defaults.timeout = 25000;
