@@ -8,8 +8,8 @@
           :title="post.username"
           :thumb="post.avatarUrl"
       >
-        <template #desc>
-          <div style="margin-top: 2px;color: darkgray">
+        <template #desc >
+          <div style="margin-top: 2px;color: darkgray" @click="doPostInfo(post.id)" >
             {{ post.content }}
           </div>
 
@@ -32,7 +32,6 @@
                   :icon="comment.avatarUrl"
                   :label="comment.content">
         </van-cell>
-
       </div>
     </van-cell-group>
     <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }"/>
@@ -175,6 +174,17 @@ const doThumb = async (index:number,postId: number) => {
   } else {
     showFailToast('点赞失败' + (res.description ? `,${res.description}` : ''))
   }
+}
+/**
+ * 跳转帖子详情
+ */
+const doPostInfo = (id: number) => {
+  router.push({
+    path: '/post/info',
+    query: {
+      id,
+    }
+  })
 }
 
 watchEffect(() => {

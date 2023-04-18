@@ -81,19 +81,14 @@ const getNoticeList =( noticeList: []) =>{
   return noticeList;
 }
 const readPost =async (noticeId:number) =>{
-  const res = await myAxios.post('/notice/update',{
+  await myAxios.post('/notice/update',{
     id: noticeId,
      noticeState: 1
   })
-  if (res){
-    showSuccessToast("成功")
-  }else {
-    showFailToast("失败")
-  }
 }
 
 /**
- * 选择帖子详情
+ * 帖子详情
  */
 const doPostInfo = (id: number,noticeId:number) => {
   router.push({
