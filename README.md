@@ -60,8 +60,15 @@ const myAxios = axios.create({
     baseURL: isDev ? 'http://localhost:9091/api':'http://服务器地址/api'
 });
 ```
-2. package.json文件中运行build命令，打包成dist文件夹
-3. 宝塔使用PHP项目启动前端项目，并修改nginx配置(否则会出现找不到页面404)
+2. config文件下myWebSocket.ts中服务器地址换成线上地址
+```
+export const myWebSocket = {
+    url: isDev ? "ws://localhost:9091/api/webSocket/":"ws://服务器地址/api/webSocket/"
+}
+
+```
+4. package.json文件中运行build命令，打包成dist文件夹
+5. 宝塔使用PHP项目启动前端项目，并修改nginx配置(否则会出现找不到页面404)
 ```
  location / {
         try_files $uri $uri/ @router;#需要指向下面的@router否则会出现vue的路由在nginx中刷新出现404
