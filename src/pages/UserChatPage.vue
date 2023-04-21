@@ -1,63 +1,73 @@
 <template>
+<van-cell-group>
   <van-cell center >
     <div style="text-align: center">
       正在和{{chatUsername}}聊天
     </div>
   </van-cell>
-  <van-cell-group
-      v-for="message in messages"
-  >
-<!--    如果是信息的consumer是本人则是接收信息-->
-    <van-cell
-        center
-      v-if="user.userAccount === message.consumer"
+</van-cell-group>
+
+
+    <van-cell-group
+      style="bottom: 20vh"
     >
-      <template #icon>
-        <van-icon :name="chatUser[0].avatarUrl"/>
-      </template>
-      <template #title class="left_frame">
-        <div class="left_triangle"></div>
-        <span class="left_rotationtiao">
+      <div v-for="message in messages">
+        <!--    如果是信息的consumer是本人则是接收信息-->
+        <van-cell
+            center
+            v-if="user.userAccount === message.consumer">
+          <template #icon>
+            <van-icon :name="chatUser[0].avatarUrl"/>
+          </template>
+          <template #title class="left_frame">
+            <div class="left_triangle"></div>
+            <span class="left_rotationtiao">
           {{message.content}}
         </span>
-      </template>
-    </van-cell>
-    <!--    如果是信息的consumer是聊天对象则是发送信息-->
-    <van-cell
-        center
-        v-if="chatUserAccount === message.consumer"
-    >
-      <template #right-icon>
-        <van-icon :name="chatUser[0].avatarUrl"/>
-      </template>
-      <template #value class="frame">
-        <div class="triangle"></div>
-        <span class="rotationtiao">
-                 {{message.content}}
-        </span>
-      </template>
-    </van-cell>
-  </van-cell-group>
+          </template>
+        </van-cell>
 
-  <van-cell style="
+        <!--    如果是信息的consumer是聊天对象则是发送信息-->
+        <van-cell
+            center
+            v-if="chatUserAccount === message.consumer"
+        >
+          <template #right-icon>
+            <van-icon :name="chatUser[0].avatarUrl"/>
+          </template>
+          <template #value class="frame">
+            <div class="triangle"></div>
+            <span class="rotationtiao">
+          {{message.content}}
+        </span>
+          </template>
+        </van-cell>
+      </div>
+    </van-cell-group>
+
+
+
+<van-cell-group>
+
+  <van-cell border style="
   bottom: var(--van-tabbar-height);
     position: fixed;" >
     <van-divider
         :style="{ color: '#1989fa', borderColor: '#1989fa' }"
     />
-    <van-cell-group border
-    >
-      <van-field
-          v-model="content"
-          rows="1"
-          autosize
-          type="textarea"
-          placeholder="请输入信息"
-      />
-      <van-button block type="primary"  @click="send">发送</van-button>
-    </van-cell-group>
+    <van-field
+        v-model="content"
+        rows="1"
+        autosize
+        type="textarea"
+        placeholder="请输入信息"
+        border
+    />
+    <van-button block type="primary"  @click="send">发送</van-button>
+  </van-cell>
 
-    </van-cell>
+
+</van-cell-group>
 
 </template>
 
@@ -75,7 +85,6 @@ const messages = ref([])
 const chatUserAccount = ref('');
 const chatUser = ref([]);
 const content = ref('');
-const userList = ref([])
 const router = useRouter();
 const chatUsername = ref('');
 
@@ -112,7 +121,7 @@ const init = () => {
       console.log("data", data)
       if (data.userList) {
         chatUser.value = data.userList.filter(user => user.userAccount === chatUserAccount.value)
-        console.log("聊天用户列表", chatUser.value)
+        console.log("聊天用户", chatUser.value)
         chatUsername.value = chatUser.value[0].username;
       } else {
         if (data.consumer === '0'){
@@ -125,6 +134,7 @@ const init = () => {
         //如果data中没有userList代表这是一个信息,信息中有接收者的userAccount
         if (data.consumer === userAccount) {
           messages.value.push(data)
+          window.scrollTo(0, document.body.scrollHeight+500)
         }
       }
     }
@@ -148,6 +158,7 @@ const send = () => {
     socket.value.send(JSON.stringify(message));
     messages.value.push({consumer: chatUserAccount.value, content: content.value})
     content.value = '';
+    window.scrollTo(0, document.body.scrollHeight)
   }
 
 }

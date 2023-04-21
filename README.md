@@ -184,6 +184,7 @@ Gebase-backend 后台系统，[后端源码项目](https://github.com/MA-douzhan
 1. 完善了帖子页面的点赞动画，队伍页面加入队伍被遮盖的问题，用户列表联系我按钮。
 2. 新增了信息通知页面，对帖子中的评论和点赞会推送信息给帖子的创建者，显示在通知页面中。
 3. 增加如何本地部署和服务器部署文档
+4. 新增加了自动回复机器人（chatGPT）项目地址：[Gebase-auto-reply](https://github.com/MA-douzhang/Gebase-auto-reply)
 
 + [x] Redis对数据缓存
 + [x] 用分布式锁对事务做原子性操作

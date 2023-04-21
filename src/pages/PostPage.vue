@@ -36,7 +36,7 @@
     </van-cell-group>
     <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }"/>
   </div>
-  <van-empty v-if="!postList || postList.length<1" description="无符合的队伍"/>
+  <van-empty v-if="!postList || postList.length<1" description="无符合的帖子"/>
   <van-sticky :offset-top="50" change @click="listPost()">
     <van-pagination
         v-model="currentPage"
