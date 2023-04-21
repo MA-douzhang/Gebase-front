@@ -1,15 +1,13 @@
 <template>
 <van-cell-group>
-  <van-cell center >
+  <van-cell center>
     <div style="text-align: center">
-      正在和{{chatUsername}}聊天
+      正在和{{ chatUsername }}聊天
     </div>
   </van-cell>
 </van-cell-group>
-
-
     <van-cell-group
-      style="bottom: 20vh"
+      style="margin-bottom: 20vh;margin-top: 2vh"
     >
       <div v-for="message in messages">
         <!--    如果是信息的consumer是本人则是接收信息-->
@@ -44,17 +42,10 @@
         </van-cell>
       </div>
     </van-cell-group>
-
-
-
 <van-cell-group>
-
   <van-cell border style="
   bottom: var(--van-tabbar-height);
     position: fixed;" >
-    <van-divider
-        :style="{ color: '#1989fa', borderColor: '#1989fa' }"
-    />
     <van-field
         v-model="content"
         rows="1"
@@ -65,8 +56,6 @@
     />
     <van-button block type="primary"  @click="send">发送</van-button>
   </van-cell>
-
-
 </van-cell-group>
 
 </template>
