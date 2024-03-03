@@ -1,15 +1,14 @@
 # 前言
 ***
-校园匹配项目的前端源码，主要是用于总结学习vue的知识，在学校中没有遇见学习前端的同学，所以自己学习了前端的知识。  
+校园匹配项目的后端源码，主要是用于总结学习SpringBoot的知识，在学校中难以寻找到与自己志气相投的同学，所以自己编写了系统寻找校园内的同学。
 
-前端页面主要分为，用户列表页面，队伍页面，帖子页面，聊天页面，个人页面。  
+后端功能主要分为，用户管理功能，队伍功能，帖子功能，聊天功能，信息通知功能。
 
-功能模块放在后端介绍
+前端源码已经开源Gebase-front 前台界面，[前端源码项目](https://github.com/MA-douzhang/Gebase-front)
 
 ## 技术栈
 ***
-vue2 + Vant + Vite + WebSocket + vue-router
-
+Spring Boot + Mybatis(Plus) + MySQL + Redis + WebSocket + Swagger
 
 ## 项目前后端部署
 ***
@@ -21,13 +20,19 @@ vue2 + Vant + Vite + WebSocket + vue-router
 ```
 npm install
 ```
-3. 在package.json文件中使用 dev 启动
+3. 全局搜索
 
-端口号 5173
+本地部署将其中的127.0.0.1要和前端的访问地址一致，如果前端访问地址为localhost
+请将127.0.0.1设置为localhost，后面地址为部署上线的地址，打包之后会根据
+isDev判断是的本地环境还是线上环境而使用不同请求地址。
+![](doc/code1.jpg)
+![](doc/code2.jpg)
+4. 在package.json文件中使用 dev 启动
+
 ## 后端部署
 1. 代码仓库 https://github.com/MA-douzhang/Gebase
 2. 本地数据库部署运行sql文件
-
+3. 修改配置文件dev中的相关配置
 ## 安装redis
 1. Redis配置(需要本地部署Redis)
 ```
@@ -38,14 +43,19 @@ npm install
     host: localhost
     database: 1
 ```
-2. 配置文件中头像上传地址需要重新配置,可自定义设置
+2. 配置文件中头像上传地址需要重新配置,可自定义设置，最好将地址保存为项目的resource包路径下
+   你的绝对路径\Gebase-bankend\src\main\resources，右键resource选择copy path，就是当前项目绝对路径
 ```
 upload:
   path: D:\\项目开发\\Gebase-bankend\\src\\main\\resources\\uploadAvatarImg\\
-  address: http://localhost:9091/api
+  address: http://localhost:9090/api
 
 ```
-端口号为 9091
+3. 修改项目默认头像
+
+将地址修改为127.0.0.1地址，或者线上服务地址都可
+![](doc/code3.jpg)
+端口号为 9090
 
 
 # 服务器部署
@@ -60,15 +70,8 @@ const myAxios = axios.create({
     baseURL: isDev ? 'http://localhost:9091/api':'http://服务器地址/api'
 });
 ```
-2. config文件下myWebSocket.ts中服务器地址换成线上地址
-```
-export const myWebSocket = {
-    url: isDev ? "ws://localhost:9091/api/webSocket/":"ws://服务器地址/api/webSocket/"
-}
-
-```
-4. package.json文件中运行build命令，打包成dist文件夹
-5. 宝塔使用PHP项目启动前端项目，并修改nginx配置(否则会出现找不到页面404)
+2. package.json文件中运行build命令，打包成dist文件夹
+3. 宝塔使用PHP项目启动前端项目，并修改nginx配置(否则会出现找不到页面404)
 ```
  location / {
         try_files $uri $uri/ @router;#需要指向下面的@router否则会出现vue的路由在nginx中刷新出现404
@@ -137,14 +140,15 @@ server:
 
 
 
-## 伙伴校园的后端源码
+
+## 伙伴校园的前端源码
 ***
-Gebase-backend 后台系统，[后端源码项目](https://github.com/MA-douzhang/Gebase)
+Gebase-front 后台系统，[前端源码项目](https://github.com/MA-douzhang/Gebase-front)
 
 ## 说明
 ***
 >如果对您有帮助，您可以右上角点一个“start”支持一下，👍
-> 
+>
 > 如有问题请直接在 Issues 中提，或者您发现问题并有非常好的解决方案，欢迎 PR 👍
 
 # 效果展示
@@ -165,26 +169,25 @@ Gebase-backend 后台系统，[后端源码项目](https://github.com/MA-douzhan
 + [x] 个人信息修改功能
 + [x] 上传头像
 + [x] 根据标签搜索用户
-+ [ ] 给帖子点赞
++ [x] 给帖子点赞功能
 + [ ] 聊天信息的记录
-
 ~~给开发者打钱的支付功能~~
 
 # 总结
-1.前端项目这块，作为初学者开始学习Vue做开发时，遇见许多许多问题，页面之间传递参数，页面的拦截器，强制跳转登录，用WebSocket做通信，对axios的封装。 
+1. 后端项目这块，作为自己从学习他人的代码，编程思想，加上自己的想法，自己构思功能的实现，详细到每一步的实现和可能出现的问题，自己边记笔记边完成，收益颇多
+2. 伙伴校园项目陆陆续续做了一个寒假才完成，但是项目中还有许多许多的细节问题，和没完成的功能，因为自己时间精力有限，暂时没时间完成，以后有时间会继续完善该项目
+3. 在对项目做上线部署时，碰见了许多问题，跨域，接口地址错误，cookie种不上，因为服务器上没有redis，直接部署到服务器上出现问题，自己一步步修改bug，不断的锻炼自己修改bug的能力。
+4. 线上部署时，项目部署在Linux服务器上时因为图片访问地址和储存地址的问题，配置文件session的作用域要为服务器地址，才能使前后端部署成功。
 
-2，伙伴校园项目陆陆续续做了一个寒假才完成，但是项目中还有许多许多的细节问题，和没完成的功能，因为自己时间精力有限，暂时没时间完成，以后有时间会继续完善该项目
 
-3，在对项目做上线部署时，碰见了许多问题，跨域，接口地址错误，cookie种不上，等待问题。
-
-4，线上部署时，项目部署在Nginx时因为Vue的router跳转并不会有真正存在的页面，会出现404的问题，所以要重新配置文件。
 
 # 2.0版本
 ***
-1. 完善了帖子页面的点赞动画，队伍页面加入队伍被遮盖的问题，用户列表联系我按钮。
-2. 新增了信息通知页面，对帖子中的评论和点赞会推送信息给帖子的创建者，显示在通知页面中。
-3. 增加如何本地部署和服务器部署文档
-4. 新增加了自动回复机器人（chatGPT）项目地址：[Gebase-auto-reply](https://github.com/MA-douzhang/Gebase-auto-reply)
+1. 完善了帖子模块，完成对帖子发布，帖子评论，点赞功能，并对帖子数据做缓存，提高查询速度。
+2. 新增了信息通知功能，对帖子中的评论和点赞会推送信息给帖子的创建者。
+3. 对用户模块，队伍模块，帖子模块都做了数据缓存，并使用Redisson锁保证事务的安全性。
+4. 增加如何本地部署和服务器部署文档
+5. 新增加了自动回复机器人（chatGPT）项目地址：[Gebase-auto-reply](https://github.com/MA-douzhang/Gebase-auto-reply)
 
 + [x] Redis对数据缓存
 + [x] 用分布式锁对事务做原子性操作
@@ -194,6 +197,6 @@ Gebase-backend 后台系统，[后端源码项目](https://github.com/MA-douzhan
 
 # 总结
 ***
-1. 在更新这个项目同时自己学习了Redis技术，并学以致用，虽然Redis中有很多技术没用上，如Feed流对信息做推送，因为自己对这部分技术还是不太了解，不能想出这部分业务该如何实现。
+1. 在更新这个项目同时自己学习了Redis技术，并学以致用，虽然Redis中有很多技术没用上，如Feed流对信息做推送，因为自己对这部分技术还是不太了解，不能想出这部分业务该如何实现。  
 2. 在新增功能的过程中会发现自己之前写代码时没考虑完善留下的坑，设计的缺陷，导致会不断地修改之前的数据库和一些业务代码。
 3. 希望这个项目能帮助我不断学习。 
