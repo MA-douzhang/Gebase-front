@@ -1,150 +1,13 @@
 # 前言
 ***
-校园匹配项目的后端源码，主要是用于总结学习SpringBoot的知识，在学校中难以寻找到与自己志气相投的同学，所以自己编写了系统寻找校园内的同学。
+校园匹配项目的前端源码，主要是用于总结学习SpringBoot的知识，在学校中难以寻找到与自己志气相投的同学，所以自己编写了系统寻找校园内的同学。
 
-后端功能主要分为，用户管理功能，队伍功能，帖子功能，聊天功能，信息通知功能。
-
-前端源码已经开源Gebase-front 前台界面，[前端源码项目](https://github.com/MA-douzhang/Gebase-front)
+后端功能主要分为，用户管理功能，队伍功能，帖子功能，聊天功能，信息通知功能。[后端源码项目](https://github.com/MA-douzhang/Gebase)
 
 该项目有完整论文，如有需要请添加WX号：wozuisuainizuichou
 ## 技术栈
 ***
 Spring Boot + Mybatis(Plus) + MySQL + Redis + WebSocket + Swagger
-
-## 项目前后端部署
-***
-
-## 本地部署
-## 前端部署方式
-1. 代码仓库 https://github.com/MA-douzhang/Gebase-front
-2. 初始化项目，下载依赖
-```
-npm install
-```
-3. 全局搜索
-
-本地部署将其中的127.0.0.1要和前端的访问地址一致，如果前端访问地址为localhost
-请将127.0.0.1设置为localhost，后面地址为部署上线的地址，打包之后会根据
-isDev判断是的本地环境还是线上环境而使用不同请求地址。
-![](doc/code1.jpg)
-![](doc/code2.jpg)
-4. 在package.json文件中使用 dev 启动
-
-## 后端部署
-1. 代码仓库 https://github.com/MA-douzhang/Gebase
-2. 本地数据库部署运行sql文件
-3. 修改配置文件dev中的相关配置
-## 安装redis
-1. Redis配置(需要本地部署Redis)
-```
-  session:
-    timeout: 86400
-  redis:
-    port: 6379
-    host: localhost
-    database: 1
-```
-2. 配置文件中头像上传地址需要重新配置,可自定义设置，最好将地址保存为项目的resource包路径下
-   你的绝对路径\Gebase-bankend\src\main\resources，右键resource选择copy path，就是当前项目绝对路径
-```
-upload:
-  path: D:\\项目开发\\Gebase-bankend\\src\\main\\resources\\uploadAvatarImg\\
-  address: http://localhost:9090/api
-
-```
-3. 修改项目默认头像
-
-将地址修改为127.0.0.1地址，或者线上服务地址都可
-![](doc/code3.jpg)
-端口号为 9090
-
-
-# 服务器部署
-1. 使用服务器配置为1核2G
-2. 宝塔面板
-
-## 前端部署
-
-1. 需要将plugins文件下的myAxios.ts中服务器地址修改为线上后端地址
-```
-const myAxios = axios.create({
-    baseURL: isDev ? 'http://localhost:9091/api':'http://服务器地址/api'
-});
-```
-2. package.json文件中运行build命令，打包成dist文件夹
-3. 宝塔使用PHP项目启动前端项目，并修改nginx配置(否则会出现找不到页面404)
-```
- location / {
-        try_files $uri $uri/ @router;#需要指向下面的@router否则会出现vue的路由在nginx中刷新出现404
-        index  index.html index.htm;
-     }
-      #对应上面的@router，主要原因是路由的路径资源并不是一个真实的路径，所以无法找到具体的文件
-      #因此需要rewrite到index.html中，然后交给路由在处理请求资源
-     location @router {
-         rewrite ^.*$ /index.html last;
-     }
-```
-
-端口号 5173
-## 后端部署
-
-### 服务器安装redis
-1. 使用宝塔面板直接安装redis
-2. 配置redis https://blog.csdn.net/SpongeBob_shouse/article/details/128909794
-   （来自星球某位同学的分享）
-3. 配置完记得重新启动redis
-
-### 后端项目打包
-1. Redis配置(需要本地部署Redis)
-```
-  session:
-    timeout: 86400
-  redis:
-    port: 6379
-    host: 服务器地址
-    database: 1
-```
-2. 在RedissonConfig文件中配置redis配置
-```
-        String redisAddress = String.format("redis://%s:%s", host, port);
-        config.useSingleServer().setAddress(redisAddress).setDatabase(3).setPassword(password);
-```
-3. 数据库地址配置
-```
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://服务器/gebase
-    username: 
-    password: 
-```
-4. session配置
-```
-server:
-  port: 9091
-  servlet:
-    context-path: /api
-    session:
-      cookie:
-        domain: 服务器地址 #线下环境 域名的访问范围
-```
-5. 配置文件中头像上传地址需要重新配置,可自定义设置
-```
-#线上环境
-#upload:
-#  path: /www/wwwroot/gebase/uploadAvatarImg/
-#  address: http://服务器地址:9091/api
-```
-
-6. package打包，将打包好的jar文件上传服务器
-7. 使用宝塔的java项目运行该jar文件
-
-
-
-
-
-## 伙伴校园的前端源码
-***
-Gebase-front 后台系统，[前端源码项目](https://github.com/MA-douzhang/Gebase-front)
 
 ## 说明
 ***
@@ -154,7 +17,7 @@ Gebase-front 后台系统，[前端源码项目](https://github.com/MA-douzhang/
 
 # 效果展示
 ***
-[查看在线展示](http://124.71.138.38:5173/)
+~~[查看在线展示](http://124.71.138.38:5173/)~~
 
 ## 目标功能
 ***
