@@ -30,11 +30,11 @@
                       v-if="team.userId !== currentUser?.id && !team.hasJoin">
             加入队伍
           </van-button>
-          <van-button v-if="team.userId === currentUser?.id" type="default" size="mini" @click="doUpdateTeam(team.id)">
+          <van-button v-if="team.userId === currentUser?.id || currentUser.userRole===1" type="default" size="mini" @click="doUpdateTeam(team.id)">
             更新队伍
           </van-button>
           <van-button type="default" size="mini" @click="doQuitTeam(team.id)" v-if="team.hasJoin">退出队伍</van-button>
-          <van-button v-if="team.userId === currentUser?.id" type="danger" size="mini" @click="doDeleteTeam(team.id)">
+          <van-button v-if="team.userId === currentUser?.id || currentUser.userRole===1" type="danger" size="mini" @click="doDeleteTeam(team.id)">
             解散队伍
           </van-button>
         </template>
