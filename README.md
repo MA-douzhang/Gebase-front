@@ -17,8 +17,12 @@ Spring Boot + Mybatis(Plus) + MySQL + Redis + WebSocket + Swagger
 
 # 效果展示
 ***
-~~[查看在线展示](http://124.71.138.38:5173/)~~
-
+![登录](./doc/img/login.jpg) ![首页](./doc/img/index.jpg)
+![队伍首页](./doc/img/team.jpg) ![队伍首页](./doc/img/teaminfo.jpg)
+![](./doc/img/post.jpg) ![](./doc/img/postinfo.jpg)
+![](./doc/img/chat.jpg) ![](./doc/img/chat2.jpg)
+![](./doc/img/chat1.jpg) ![](./doc/img/notice.jpg)
+![](./doc/img/userinfo.jpg) ![](./doc/img/tag.jpg)
 ## 目标功能
 ***
 + [x] 登录注册功能
