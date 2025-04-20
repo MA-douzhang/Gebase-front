@@ -6,7 +6,7 @@
   </van-cell>
   <UserCardList :user-list="userList" :loading="loading"/>
   <template v-if="!isMatchMode">
-    <van-empty v-if="!userList || userList.length<1" description="无符合的队伍"/>
+    <van-empty v-if="!userList || userList.length<1" description="无符合的用户"/>
     <van-sticky :offset-top="50" change @click="loadDate()">
       <van-pagination
           v-model="currentPage"

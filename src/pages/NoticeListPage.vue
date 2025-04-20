@@ -7,7 +7,7 @@
       <van-cell-group
           v-for="notice in noticeList"
       >
-        <van-cell :title="notice.senderName+notice.content"  :label="notice.targetContent" @click="doPostInfo(notice.targetId,notice.id)" is-link>
+        <van-cell :title="notice.senderName+notice.content"  :label="notice.targetContent" @click="doPostInfo(notice.targetId,notice.id,notice.contentType)" is-link>
           <template #right-icon v-if="notice.noticeState===0">
             <van-icon name="warning" color="red" size="20px" badge=""/>
           </template>
@@ -53,7 +53,7 @@ const init =async () => {
       noticeList.value = getNoticeList(notices.value);
       console.log(noticeList.value)
   } else {
-    showFailToast('删除失败' + (res.description ? `,${res.description}` : ''))
+    showFailToast('加载失败' + (res.description ? `,${res.description}` : ''))
   }
 }
 /**
@@ -90,13 +90,23 @@ const readPost =async (noticeId:number) =>{
 /**
  * 帖子详情
  */
-const doPostInfo = (id: number,noticeId:number) => {
-  router.push({
-    path: '/post/info',
-    query: {
-      id,
-    }
-  })
+const doPostInfo = (id: number,noticeId:number,contentType:number) => {
+  if (contentType!=5){
+    router.push({
+      path: '/post/info',
+      query: {
+        id,
+      }
+    })
+  }else {
+    router.push({
+      path: '/team/task/info',
+      query: {
+        id,
+      }
+    })
+  }
+
   readPost(noticeId)
 }
 </script>

@@ -5,8 +5,8 @@
           :title="user.username"
           :thumb="user.avatarUrl"
           :tag="user.gender === 0?'男':'女'"
+          class="card"
       >
-
         <template #tags>
           <van-tag plain type="danger" v-for="tag in user.tags" style="margin-right: 8px;margin-top: 8px">
             {{ tag }}
@@ -74,5 +74,30 @@ watchEffect(()=>{
 </script>
 
 <style scoped>
+
+.card {
+  position: relative;
+  margin-bottom: 12px;
+  background-image: url("../assets/bg.png");
+  height: 130px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: #ffffff;
+  box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  color: #ffffff;
+}
+.rightbox {
+  padding: 5px 10px;
+  position: absolute;
+  right: 0;
+  top: 15px;
+  background-image: url("../assets/right.png");
+  background-size: cover;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 3px;
+}
+
 
 </style>

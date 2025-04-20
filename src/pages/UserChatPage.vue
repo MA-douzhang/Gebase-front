@@ -19,9 +19,16 @@
           </template>
           <template #title class="left_frame">
             <div class="left_triangle"></div>
-            <span class="left_rotationtiao">
-          {{message.content}}
-        </span>
+            <span v-if="message.type=='message'" class="left_rotationtiao">
+              {{message.content}}
+            </span>
+            <van-image v-if="message.type=='image'"
+                       width="10rem"
+                       height="10rem"
+                       fit="contain"
+                       @click="imagePreview(message.content)"
+                       :src="message.content"
+            />
           </template>
         </van-cell>
 
@@ -35,9 +42,16 @@
           </template>
           <template #value class="frame">
             <div class="triangle"></div>
-            <span class="rotationtiao">
-          {{message.content}}
-        </span>
+            <span v-if="message.type=='message'" class="rotationtiao">
+              {{message.content}}
+            </span>
+            <van-image v-if="message.type=='image'"
+                width="10rem"
+                height="10rem"
+                fit="contain"
+                @click="imagePreview(message.content)"
+                :src="message.content"
+            />
           </template>
         </van-cell>
       </div>
@@ -54,7 +68,12 @@
         placeholder="请输入信息"
         border
     />
-    <van-button block type="primary"  @click="send">发送</van-button>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <van-button style="width: 85%" type="primary" @click="send">发送</van-button>
+      <van-uploader :after-read="afterRead" :max-count="1">
+        <van-button icon="photo-o" type="primary"></van-button>
+      </van-uploader>
+    </div>
   </van-cell>
 </van-cell-group>
 
@@ -64,7 +83,7 @@
 
 import {onBeforeUnmount, onMounted, ref} from "vue";
 import {getCurrentUser} from "../services/user";
-import {showFailToast, showSuccessToast} from "vant";
+import {showFailToast, showImagePreview, showSuccessToast} from "vant";
 import {useRoute, useRouter} from "vue-router";
 import {myWebSocket} from "../config/myWebSocket";
 
@@ -143,15 +162,55 @@ const send = () => {
     showFailToast("信息为空")
     return;
   } else {
-    let message = {userAccount: user.value.userAccount, consumer: chatUserAccount.value, content: content.value}
+    let message = {userAccount: user.value.userAccount, consumer: chatUserAccount.value, type:"message",content: content.value}
     socket.value.send(JSON.stringify(message));
-    messages.value.push({consumer: chatUserAccount.value, content: content.value})
+    console.log("发送信息",JSON.stringify(message))
+    messages.value.push({consumer: chatUserAccount.value,type:"message", content: content.value})
     content.value = '';
     window.scrollTo(0, document.body.scrollHeight)
   }
 
 }
 
+/**
+ * 发送图片回调函数
+ */
+const afterRead = (file:any) => {
+  console.log("图片", file.file);
+  const reader = new FileReader();
+
+  // 使用 FileReader 读取文件内容
+  reader.readAsDataURL(file.file);
+
+  // 当文件读取完成时的回调
+  reader.onload = () => {
+    const base64Data = reader.result; // 此时，reader.result 已经包含 Base64 编码的图片数据
+
+    // 创建消息对象，发送图片的二进制数据或 Base64 编码
+    let message = {
+      userAccount: user.value.userAccount,
+      consumer: chatUserAccount.value,
+      type: "image",
+      content: base64Data
+    };
+
+    // 发送 WebSocket 消息
+    socket.value.send(JSON.stringify(message));
+    messages.value.push({consumer: chatUserAccount.value,type:"image", content: base64Data})
+  };
+
+  // 处理文件读取错误（如果需要的话）
+  reader.onerror = (error) => {
+    console.error("文件读取失败", error);
+  };
+};
+
+const imagePreview=(content:string)=>{
+  showImagePreview({
+    images: [content],
+    closeable:true
+  })
+}
 
 </script>
 

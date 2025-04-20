@@ -19,6 +19,8 @@ import UserChatListPage from "../pages/UserChatListPage.vue";
 import UserChatPage from "../pages/UserChatPage.vue";
 import NoticeListPage from "../pages/NoticeListPage.vue";
 import PostInfoPage from "../pages/PostInfoPage.vue";
+import TeamTaskAddPage from "../pages/TeamTaskAddPage.vue";
+import TeamTaskInfoPage from "../pages/TeamTaskInfoPage.vue";
 
 
 const routes = [
@@ -27,6 +29,8 @@ const routes = [
     {path: '/team/add',title:"创建队伍", component: TeamAddPage},
     {path: '/team/update', title:"更新队伍",component: TeamUpdatePage},
     {path: '/team/info', title:"队伍信息",component: TeamInfoPage},
+    {path: '/team/task/add', title:"添加队伍任务",component: TeamTaskAddPage},
+    {path: '/team/task/info', title:"队伍任务详情",component: TeamTaskInfoPage},
     {path: '/user', title:"个人信息",component: UserPage},
     {path: '/search', title:"找伙伴",component: SearchPage},
     {path: '/user/edit', title:"编辑信息",component: UserEditPage},

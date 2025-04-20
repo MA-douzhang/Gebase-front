@@ -29,9 +29,19 @@
       </van-card>
       <van-empty v-if="!teamInfo || teamInfo.length<1" description="无符合的队伍"/>
     </div>
-    <van-divider content-position="left">队伍用户</van-divider>
-    <UserCardList :user-list="teamInfo.userJoinList" :loading="loading"/>
+    <van-tabs v-model:active="active">
+      <van-tab title="teamUser">
+        <template #title><van-icon name="friends-o" />队伍用户</template>
+        <UserCardList :user-list="teamInfo.userJoinList" :loading="loading"/>
+      </van-tab>
+      <van-tab title='teamTask'>
+        <template #title><van-icon name="notes-o" />队伍任务</template>
+        <TeamTaskCardList :team-task-list="teamInfo.teamTaskList" :loading="loading"/>
+      </van-tab>
+    </van-tabs>
   </van-pull-refresh>
+  <van-button v-if="teamInfo.userId===user?.id"  icon="plus" type="primary" class="add-button" @click="doTeamTaskAdd"/>
+
 </template>
 
 <script setup lang="ts">
@@ -42,6 +52,8 @@ import {showFailToast, showSuccessToast} from "vant";
 import {onMounted, ref, watchEffect} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {userType} from "../models/user";
+import TeamTaskCardList from "../components/TeamTaskCardList.vue";
+import {getCurrentUser} from "../services/user";
 
 //const currentUser = ref('');
 const router = useRouter();
@@ -49,11 +61,14 @@ const route = useRoute();
 const loading = ref(false);
 const teamInfo = ref('');
 const teamId = route.query.id;
+const active=ref("teamUser")
+const user=ref()
 /**
  * 加载队伍信息
  */
 onMounted(async () => {
-  //currentUser.value = await getCurrentUser();
+  user.value=await getCurrentUser()
+
   const res = await myAxios.get("/team/get", {
     params: {
       id: teamId,
@@ -62,9 +77,11 @@ onMounted(async () => {
   if (res?.code === 0 && res) {
     console.log(res)
     teamInfo.value = res.data;
+
   } else {
     showFailToast('获取队伍信息失败' + (res.description ? `,${res.description}` : ''))
   }
+  console.log("user",user.value)
 })
 
 
@@ -74,6 +91,17 @@ const onRefresh = () => {
   }, 1000);
 };
 
+/**
+ * 添加帖子
+ */
+const doTeamTaskAdd = () => {
+  router.push({
+    path: "/team/task/add",
+    query: {
+      teamId,
+    }
+  })
+}
 </script>
 
 <style scoped>
